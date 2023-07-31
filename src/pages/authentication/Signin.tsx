@@ -45,8 +45,8 @@ export default function Signin() {
 
                   <form>
                     <div className="grid gap-y-4">
-                      <InputText onChange={handleEmailChange} messageError={""} label='Adresse email' type='text' />
-                      <InputText onChange={handlePasswordChange} messageError={""} label='Mot de passe' type='password' />
+                      <InputText onDataChange={handleEmailChange} messageError={""} label='Adresse email' type='text' />
+                      <InputText onDataChange={handlePasswordChange} messageError={""} label='Mot de passe' type='password' />
                       <Button label='Inscription' />
                     </div>
                   </form>

@@ -41,9 +41,9 @@ export default function Signup() {
                 <FacebookAuthentication />
                 <div className="py-3 flex items-center text-xs text-gray-400 uppercase before:flex-[1_1_0%] before:border-t before:border-gray-200 before:mr-6 after:flex-[1_1_0%] after:border-t after:border-gray-200 after:ml-6">Ou</div>
                 <div className="grid gap-y-4">
-                  <InputText onChange={handleFullnameChange} messageError={""} label='Nom complet' type='text' />
-                  <InputText onChange={handleEmailChange} messageError={""} label='Adresse email' type='text' />
-                  <InputText onChange={handlePasswordChange} messageError={""} label='Mot de passe' type='password' />
+                  <InputText onDataChange={handleFullnameChange} messageError={""} label='Nom complet' type='text' />
+                  <InputText onDataChange={handleEmailChange} messageError={""} label='Adresse email' type='text' />
+                  <InputText onDataChange={handlePasswordChange} messageError={""} label='Mot de passe' type='password' />
                   <Button label='Connexion' />
                 </div>
               </div>

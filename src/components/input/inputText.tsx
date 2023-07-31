@@ -4,7 +4,7 @@ type InputProps = {
     messageError?: string,
     type: string,
     label: string | undefined,
-    onChange: (value: string) => void,
+    onDataChange: (value: string) => void,
 
 }
 
@@ -13,7 +13,7 @@ export default function InputText(props: InputProps) {
 
     const handleDataChange = (newValue: string) => {
         setData(newValue)
-        props.onChange(newValue)
+        props.onDataChange(newValue)
     }
     return (
         <div>

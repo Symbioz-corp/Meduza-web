@@ -29,6 +29,5 @@ export class UserService extends FirebaseService {
             pictureList: []
         })
         return userCredential.user.uid
-
     }
 }
