@@ -12,11 +12,14 @@ export default function Signin() {
 
   const handleEmailChange = (newEmail: string) => {
     setEmail(newEmail)
-    console.log(email)
   }
   const handlePasswordChange = (newPassword: string) => {
     setPassword(newPassword)
-    console.log(password)
+  }
+
+  const handleSignin = async () => {
+    console.log('email : ', email)
+    console.log('password : ', password)
   }
   return (
     <>
@@ -47,7 +50,7 @@ export default function Signin() {
                     <div className="grid gap-y-4">
                       <InputText onDataChange={handleEmailChange} messageError={""} label='Adresse email' type='text' />
                       <InputText onDataChange={handlePasswordChange} messageError={""} label='Mot de passe' type='password' />
-                      <Button label='Inscription' />
+                      <Button label='Inscription' onDataChange={handleSignin} />
                     </div>
                   </form>
                 </div>

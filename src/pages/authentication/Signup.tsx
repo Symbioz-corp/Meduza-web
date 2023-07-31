@@ -13,17 +13,21 @@ export default function Signup() {
 
   const handleFullnameChange = (newFullname: string) => {
     setFullname(newFullname)
-    console.log(fullname)
   }
 
   const handleEmailChange = (newEmail: string) => {
     setEmail(newEmail)
-    console.log(email)
   }
   const handlePasswordChange = (newPassword: string) => {
     setPassword(newPassword)
-    console.log(password)
   }
+
+  const handleSignup = async () => {
+    console.log('fullname : ', fullname)
+    console.log('email : ', email)
+    console.log('password : ', password)
+  }
+
   return (
     <section className="w-full h-screen bg-slate-900 flex justify-center items-center">
       <div className="w-full mt-4 z-[60] overflow-x-hidden overflow-y-auto">
@@ -44,7 +48,7 @@ export default function Signup() {
                   <InputText onDataChange={handleFullnameChange} messageError={""} label='Nom complet' type='text' />
                   <InputText onDataChange={handleEmailChange} messageError={""} label='Adresse email' type='text' />
                   <InputText onDataChange={handlePasswordChange} messageError={""} label='Mot de passe' type='password' />
-                  <Button label='Connexion' />
+                  <Button label='Connexion' onDataChange={handleSignup} />
                 </div>
               </div>
             </div>
