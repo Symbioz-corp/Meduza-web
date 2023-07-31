@@ -48,7 +48,7 @@ export default function Signup() {
                   <InputText onDataChange={handleFullnameChange} messageError={""} label='Nom complet' type='text' />
                   <InputText onDataChange={handleEmailChange} messageError={""} label='Adresse email' type='text' />
                   <InputText onDataChange={handlePasswordChange} messageError={""} label='Mot de passe' type='password' />
-                  <Button label='Connexion' onDataChange={handleSignup} />
+                  <Button label='Inscription' onDataChange={handleSignup} />
                 </div>
               </div>
             </div>
