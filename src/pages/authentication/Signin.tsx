@@ -1,9 +1,10 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 export default function Signin() {
   const navigate = useNavigate();
-
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   return (
     <>
       <section className="w-full h-screen bg-slate-900 flex justify-center items-center">
@@ -91,6 +92,7 @@ export default function Signin() {
                         </label>
                         <div className="relative">
                           <input
+                            value={email} onChange={(e) => setEmail(e.target.value)}
                             type="email"
                             id="email"
                             name="email"
@@ -133,6 +135,7 @@ export default function Signin() {
                         </div>
                         <div className="relative">
                           <input
+                            value={password} onChange={(e) => setPassword(e.target.value)}
                             type="password"
                             id="password"
                             name="password"
