@@ -1,7 +1,14 @@
-import React from "react"
+import React, { useState } from "react"
 import Footer from "../../components/home/footer"
 
 export default function Signup() {
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [fullname, setFullname] = useState('')
+
+    // const handleSignupWithPassword = async () =>{
+    //     setEmail()
+    // }
     return (
         <>
             <section className="w-full h-screen bg-slate-900 flex justify-center items-center h-screen">
@@ -31,7 +38,7 @@ export default function Signup() {
                                     </a>
                                     <a className="mt-4 w-full py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border font-medium bg-white text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-blue-600 transition-all text-sm" href="#">
                                         <svg className="w-4 h-4 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 8 19">
-                                            <path fill-rule="evenodd" d="M6.135 3H8V0H6.135a4.147 4.147 0 0 0-4.142 4.142V6H0v3h2v9.938h3V9h2.021l.592-3H5V3.591A.6.6 0 0 1 5.592 3h.543Z" clip-rule="evenodd" />
+                                            <path fillRule="evenodd" d="M6.135 3H8V0H6.135a4.147 4.147 0 0 0-4.142 4.142V6H0v3h2v9.938h3V9h2.021l.592-3H5V3.591A.6.6 0 0 1 5.592 3h.543Z" clipRule="evenodd" />
                                         </svg>
                                         Continuer avec facebook
                                     </a>
@@ -43,7 +50,7 @@ export default function Signup() {
                                             <div>
                                                 <label className="block text-sm mb-2 ">Nom complet</label>
                                                 <div className="relative">
-                                                    <input type="fullname" id="fullname" name="fullname" className="py-3 px-4 block w-full border border-solid  border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500   " required aria-describedby="fullname-error" />
+                                                    <input value={fullname} onChange={(e) => setFullname(e.target.value)} type="fullname" id="fullname" name="fullname" className="py-3 px-4 block w-full border border-solid  border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500   " required aria-describedby="fullname-error" />
                                                     <div className="hidden absolute inset-y-0 right-0 flex items-center pointer-events-none pr-3">
                                                         <svg className="h-5 w-5 text-red-500" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
                                                             <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
@@ -55,7 +62,7 @@ export default function Signup() {
                                             <div>
                                                 <label className="block text-sm mb-2 ">Adresse email</label>
                                                 <div className="relative">
-                                                    <input type="email" id="email" name="email" className="py-3 px-4 block w-full border border-solid  border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500   " required aria-describedby="email-error" />
+                                                    <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" id="email" name="email" className="py-3 px-4 block w-full border border-solid  border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500   " required aria-describedby="email-error" />
                                                     <div className="hidden absolute inset-y-0 right-0 flex items-center pointer-events-none pr-3">
                                                         <svg className="h-5 w-5 text-red-500" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
                                                             <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
@@ -64,21 +71,20 @@ export default function Signup() {
                                                 </div>
                                                 <p className="hidden text-xs text-red-600 mt-2" id="email-error">Veuillez fournir une adresse email valide</p>
                                             </div>
-
                                             <div>
                                                 <div className="flex justify-between items-center">
                                                     <label className="block text-sm mb-2 ">Mot de passe</label>
                                                     <a className="text-sm text-blue-600 decoration-2 hover:underline font-medium" href="#">Générer un mot de passe</a>
                                                 </div>
                                                 <div className="relative">
-                                                    <input type="password" id="password" name="password" className="py-3 px-4 block w-full border border-solid  border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500   " required aria-describedby="password-error" />
+                                                    <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" id="password" name="password" className="py-3 px-4 block w-full border border-solid  border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500   " required aria-describedby="password-error" />
                                                     <div className="hidden absolute inset-y-0 right-0 flex items-center pointer-events-none pr-3">
                                                         <svg className="h-5 w-5 text-red-500" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
                                                             <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
                                                         </svg>
                                                     </div>
                                                 </div>
-                                                <p className="hidden text-xs text-red-600 mt-2" id="password-error">Votre mot de passe doit contenir au moin 8 caractères</p>
+                                                <p className=" text-xs text-red-600 mt-2" id="password-error">Votre mot de passe doit contenir au moin 8 caractères</p>
                                             </div>
 
                                             <button type="submit" className="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm">Connexion</button>
