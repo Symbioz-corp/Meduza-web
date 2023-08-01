@@ -4,11 +4,14 @@ import Button from "../../components/input/button"
 import FacebookAuthentication from "../../components/input/facebookAuthentication"
 import GoogleAuthentication from "../../components/input/googleAuthentication"
 import InputText from "../../components/input/inputText"
+import UserService from "../../firebase/services/User.service"
 
 export default function Signin() {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+
+  const [emailError, setEmailError] = useState('')
 
   const handleEmailChange = (newEmail: string) => {
     setEmail(newEmail)
@@ -17,9 +20,11 @@ export default function Signin() {
     setPassword(newPassword)
   }
 
+
   const handleSignin = async () => {
     console.log('email : ', email)
     console.log('password : ', password)
+    UserService.signin(email, password)
   }
   return (
     <>
@@ -46,13 +51,13 @@ export default function Signin() {
 
                   <div className="py-3 flex items-center text-xs text-gray-400 uppercase before:flex-[1_1_0%] before:border-t before:border-gray-200 before:mr-6 after:flex-[1_1_0%] after:border-t after:border-gray-200 after:ml-6">  Ou</div>
 
-                  <form>
+                  <div>
                     <div className="grid gap-y-4">
-                      <InputText onDataChange={handleEmailChange} messageError={""} label='Adresse email' type='text' />
-                      <InputText onDataChange={handlePasswordChange} messageError={""} label='Mot de passe' type='password' />
+                      <InputText messageError={emailError} onDataChange={handleEmailChange} label='Adresse email' type='text' />
+                      <InputText onDataChange={handlePasswordChange} label='Mot de passe' type='password' />
                       <Button label='Connexion' onDataChange={handleSignin} />
                     </div>
-                  </form>
+                  </div>
                 </div>
               </div>
             </div>

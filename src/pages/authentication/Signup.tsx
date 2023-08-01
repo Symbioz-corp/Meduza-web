@@ -4,6 +4,8 @@ import Button from "../../components/input/button"
 import FacebookAuthentication from "../../components/input/facebookAuthentication"
 import GoogleAuthentication from "../../components/input/googleAuthentication"
 import InputText from "../../components/input/inputText"
+import UserService from "../../firebase/services/User.service"
+import { Validation } from "../../utils/validation"
 
 export default function Signup() {
   const navigate = useNavigate()
@@ -11,21 +13,33 @@ export default function Signup() {
   const [password, setPassword] = useState('')
   const [email, setEmail] = useState('')
 
-  const handleFullnameChange = (newFullname: string) => {
-    setFullname(newFullname)
-  }
+  const handleFullnameChange = (newFullname: string) => { setFullname(newFullname) }
 
-  const handleEmailChange = (newEmail: string) => {
-    setEmail(newEmail)
-  }
-  const handlePasswordChange = (newPassword: string) => {
-    setPassword(newPassword)
-  }
+  const handleEmailChange = (newEmail: string) => { setEmail(newEmail) }
+  const handlePasswordChange = (newPassword: string) => { setPassword(newPassword) }
 
   const handleSignup = async () => {
+    const name = fullname.trim()
+    const nameWords = name.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    setFullname(nameWords.join(' '))
+    setEmail(email.trim())
+
     console.log('fullname : ', fullname)
     console.log('email : ', email)
     console.log('password : ', password)
+
+    if (!fullname.length) alert('Veuillez remplir tout les champs')
+    else if (!email.length) alert('Veuillez remplir tout les champs')
+    else if (!password.length) alert('Veuillez remplir tout les champs')
+    else if (Validation.isEmail(email) == false) alert('Veuillez entrer une adresse email valide')
+    else if (Validation.isName(fullname) == false || fullname.length < 5) alert('Veuillez renseigner votre vrai nom')
+    else if (password.length < 7) alert('Le mot de passe doit contenir au moin 8 caractères')
+    else {
+
+      const response = await UserService.signUp(email, fullname, password)
+      console.log('Signup response: ', response);
+
+    }
   }
 
   return (
@@ -45,9 +59,9 @@ export default function Signup() {
                 <FacebookAuthentication />
                 <div className="py-3 flex items-center text-xs text-gray-400 uppercase before:flex-[1_1_0%] before:border-t before:border-gray-200 before:mr-6 after:flex-[1_1_0%] after:border-t after:border-gray-200 after:ml-6">Ou</div>
                 <div className="grid gap-y-4">
-                  <InputText onDataChange={handleFullnameChange} messageError={""} label='Nom complet' type='text' />
-                  <InputText onDataChange={handleEmailChange} messageError={""} label='Adresse email' type='text' />
-                  <InputText onDataChange={handlePasswordChange} messageError={""} label='Mot de passe' type='password' />
+                  <InputText onDataChange={handleFullnameChange} label='Nom complet' type='text' />
+                  <InputText onDataChange={handleEmailChange} label='Adresse email' type='text' />
+                  <InputText onDataChange={handlePasswordChange} label='Mot de passe' type='password' />
                   <Button label='Inscription' onDataChange={handleSignup} />
                 </div>
               </div>

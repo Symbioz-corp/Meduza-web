@@ -2,10 +2,10 @@ import { collection, CollectionReference } from "firebase/firestore"
 import { firebaseApp } from "./../firebase"
 
 export type UserModel = {
-    pictureUrl: string | undefined,
+    pictureUrl?: string | null,
     email: string,
     fullname: string,
-    password: string,
+    password?: string,
     pictureList: string[] | undefined,
     uid: string
 
