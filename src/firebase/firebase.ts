@@ -1,4 +1,4 @@
-import { Auth, getAuth } from "firebase/auth"
+import { Auth, browserLocalPersistence, getAuth, setPersistence } from "firebase/auth"
 import { Firestore, getFirestore } from "firebase/firestore"
 import { FirebaseStorage, getStorage } from 'firebase/storage'
 
@@ -18,7 +18,10 @@ export class FirebaseService implements IFirebase {
         this.storage = getStorage()
         this.auth.useDeviceLanguage()
         this.firestore = getFirestore()
+
+        setPersistence(this.auth, browserLocalPersistence);
     }
+
 }
 export const firebaseApp = new FirebaseService()
 

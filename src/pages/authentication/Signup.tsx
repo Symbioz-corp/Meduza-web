@@ -1,45 +1,38 @@
-import React, { useState } from "react"
-import { useNavigate } from "react-router-dom"
-import Button from "../../components/input/button"
+import { showSuccess, TSuccessModal } from "../../store/features/successModalSlice"
 import FacebookAuthentication from "../../components/input/facebookAuthentication"
 import GoogleAuthentication from "../../components/input/googleAuthentication"
-import InputText from "../../components/input/inputText"
-import UserService from "../../firebase/services/User.service"
 import { show, TErrorModal } from "../../store/features/errorModalSlice"
-import { Dispatch } from "../../store/hooks"
-import { ValueError } from "../../utils/error"
+import { connect } from "../../store/features/authenticationSlice"
+import UserService from "../../firebase/services/User.service"
+import InputText from "../../components/input/inputText"
 import { Validation } from "../../utils/validation"
+import Button from "../../components/input/button"
+import { ValueError } from "../../utils/error"
+import { useNavigate } from "react-router-dom"
+import { Dispatch } from "../../store/hooks"
+import React, { useState } from "react"
 
 export default function Signup() {
-
-
-  const navigate = useNavigate()
-  const [fullname, setFullname] = useState('')
-  const [password, setPassword] = useState('')
-  const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [email, setEmail] = useState('')
-
-  const handleFullnameChange = (newFullname: string) => { setFullname(newFullname) }
-
-  const handleEmailChange = (newEmail: string) => { setEmail(newEmail) }
-  const handlePasswordChange = (newPassword: string) => { setPassword(newPassword) }
-
   const dispatch = Dispatch()
 
-  const showModal = (payload: TErrorModal) => {
-    dispatch(show(payload))
-  }
-  const handleSignup = async () => {
+  const navigate = useNavigate()
+  const [email, setEmail] = useState<string>('')
+  const [fullname, setFullname] = useState<string>('')
+  const [password, setPassword] = useState<string>('')
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
+  const showModal = (payload: TErrorModal) => { dispatch(show(payload)) }
+  const showSuccessModal = (payload: TSuccessModal) => { dispatch(showSuccess(payload)) }
+
+  const handleEmailChange = (newEmail: string) => { setEmail(newEmail) }
+  const handleFullnameChange = (newFullname: string) => { setFullname(newFullname) }
+  const handlePasswordChange = (newPassword: string) => { setPassword(newPassword) }
+
+  const handleSignup = async () => {
     const name = fullname.trim()
     const nameWords = name.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1))
     setFullname(nameWords.join(' '))
     setEmail(email.trim())
-
-    console.log('fullname : ', fullname)
-    console.log('email : ', email)
-    console.log('password : ', password)
-
     if (!fullname.length) showModal({ code: 'Comment vous appelez vous?', message: 'Veuillez fournir tout les informations demandées notament votre nom complet' })
     else if (!email.length) showModal({ code: 'Vous avez oublié de fournir votre adresse email', message: 'Veuillez fournir tout les informations demandées notament votre adresse email' })
     else if (!password.length) showModal({ code: 'Penser à remplir le mot de passe', message: 'Pour votre securité vous devez fournir un mot de passe de 8 caractère minimum.' })
@@ -50,17 +43,22 @@ export default function Signup() {
       setIsLoading(true)
       await UserService.signUp(email, fullname, password)
         .then((credential) => {
-          console.log(credential);
-        })
-        .catch((error) => {
-          const payload: TErrorModal = {
-            code: error.code,
-            message: error.message
-          }
-          if (error instanceof ValueError) showModal(payload)
-        })
-        .finally(() => setIsLoading(false))
 
+          if (credential) {
+            const user = credential.user
+
+            dispatch(connect({
+              displayName: user.displayName,
+              email: user.email,
+              emailVerified: user.emailVerified,
+              photoURL: user.photoURL,
+              uid: user.uid,
+            }))
+          }
+          showSuccessModal({ code: 'Compte créé avec succès.', message: 'Votre compte a bien été créé. Vous avez reçu un email contenant un lien pour valider votre adresse email.' })
+        })
+        .catch((error) => { if (error instanceof ValueError) showModal({ code: error.code, message: error.message }) })
+        .finally(() => setIsLoading(false))
     }
   }
 

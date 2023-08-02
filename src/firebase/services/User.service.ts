@@ -48,6 +48,8 @@ class UserService extends FirebaseService {
                 if (error instanceof FirebaseError) {
                     switch (error.code) {
                         case 'auth/invalid-email': throw new ValueError("Adresse e-mail invalide", "Veuillez entrer une adresse e-mail valide pour continuer.")
+                        case 'auth/missing-password': throw new ValueError("Le mot de passe est nécessaire", `Pour vous connecter sur le compte ${email}, vous devez fournir le mot de passe correspondant`)
+                        case 'auth/user-not-found': throw new ValueError("Vous devez d'abord créer un compte", "L'adresse email que vous avez fourni n'a pas encore été inscrit sur Medusa. Vous êtes invité à créer un compte.")
                         case 'auth/wrong-password': throw new ValueError('Mot de passe incorrect', 'Le mot de passe que vous avez saisi est incorrect. Veuillez réessayer.')
                         default: throw new ValueError(error.message, error.code)
                     }
@@ -72,9 +74,8 @@ class UserService extends FirebaseService {
                 })
                 if (this.auth.currentUser?.emailVerified == false) {
                     sendEmailVerification(this.auth.currentUser)
-                        .then(() => alert('Un email de verification vous a été envoyé'))
                         .catch((error) => {
-                            console.log(error)
+                            console.error(error)
                         })
                 } else throw new ValueError(`L'adresse a déjà été vérifiée`, 'Cette adresse e-mail a déjà été confirmée.')
                 return userCredential

@@ -1,9 +1,27 @@
 import React from "react";
 import UserService from "../../firebase/services/User.service";
+import { connect } from "../../store/features/authenticationSlice";
+import { showSuccess, TSuccessModal } from "../../store/features/successModalSlice";
+import { Dispatch } from "../../store/hooks";
 
 export default function GoogleAuthentication() {
-    const handleAuth = () => {
-        UserService.signinWithGoogle()
+    const dispatch = Dispatch()
+    const showSuccessModal = (payload: TSuccessModal) => { dispatch(showSuccess(payload)) }
+    const handleAuth = async () => {
+        await UserService.signinWithGoogle()
+            .then((userCredential) => {
+                if (userCredential) {
+                    const user = userCredential.user
+                    dispatch(connect({
+                        displayName: user.displayName,
+                        email: user.email,
+                        emailVerified: user.emailVerified,
+                        photoURL: user.photoURL,
+                        uid: user.uid,
+                    }))
+                    showSuccessModal({ code: 'Connexion réussie', message: 'Vous pouvez commencer à profiter des services fourni par Medusa' })
+                }
+            })
     }
     return (
         <a onClick={handleAuth} className="w-full py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border font-medium bg-white text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-blue-600 transition-all text-sm" href="#">

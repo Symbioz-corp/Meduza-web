@@ -5,12 +5,21 @@ import FacebookAuthentication from "../../components/input/facebookAuthenticatio
 import GoogleAuthentication from "../../components/input/googleAuthentication"
 import InputText from "../../components/input/inputText"
 import UserService from "../../firebase/services/User.service"
+import { connect } from "../../store/features/authenticationSlice"
+import { show, TErrorModal } from "../../store/features/errorModalSlice"
+import { showSuccess, TSuccessModal } from "../../store/features/successModalSlice"
+import { Dispatch } from "../../store/hooks"
 
 export default function Signin() {
+  const dispatch = Dispatch()
+
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const [password, setPassword] = useState('')
 
+  const showModal = (payload: TErrorModal) => { dispatch(show(payload)) }
+  const showSuccessModal = (payload: TSuccessModal) => { dispatch(showSuccess(payload)) }
 
   const handleEmailChange = (newEmail: string) => {
     setEmail(newEmail)
@@ -21,9 +30,32 @@ export default function Signin() {
 
 
   const handleSignin = async () => {
-    console.log('email : ', email)
-    console.log('password : ', password)
-    UserService.signin(email, password)
+    if (!email.length) showModal({ code: 'Vous avez oublié de fournir votre adresse email', message: 'Veuillez fournir tout les informations demandées notament votre adresse email' })
+    else if (!password.length) showModal({ code: 'Le mot de passe est nécessaire', message: `Pour vous connecter sur le compte ${email}, vous devez fournir le mot de passe correspondant` })
+    else {
+      setIsLoading(true)
+      await UserService.signin(email, password)
+        .then((userCredential) => {
+          if (userCredential) {
+            const user = userCredential.user
+
+            dispatch(connect({
+              displayName: user.displayName,
+              email: user.email,
+              emailVerified: user.emailVerified,
+              photoURL: user.photoURL,
+              uid: user.uid,
+            }))
+            showSuccessModal({ code: 'Connexion réussie', message: 'Vous pouvez commencer à profiter des services fourni par Medusa' })
+          }
+        })
+        .catch((error) => {
+          showModal({ code: error.code, message: error.message })
+        })
+        .finally(() => {
+          setIsLoading(false)
+        })
+    }
   }
   return (
     <>
@@ -54,7 +86,7 @@ export default function Signin() {
                     <div className="grid gap-y-4">
                       <InputText onDataChange={handleEmailChange} label='Adresse email' type='text' />
                       <InputText onDataChange={handlePasswordChange} label='Mot de passe' type='password' />
-                      <Button label='Connexion' onDataChange={handleSignin} />
+                      <Button label='Connexion' onDataChange={handleSignin} isLoading={isLoading} />
                     </div>
                   </div>
                 </div>

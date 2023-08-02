@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Suspense, lazy } from "react";
 import ScrollTop from "./utils/ScrollTop";
 import ErrorModal from "./components/modals/errorModal";
+import SuccessModal from "./components/modals/successModal";
 
 const Home = lazy(() => import("./pages/general/Home"));
 const Signin = lazy(() => import("./pages/authentication/Signin"));
@@ -25,6 +26,7 @@ function AppContent() {
     <>
       <ScrollTop />
       <ErrorModal />
+      <SuccessModal />
       <Routes>
         <Route path="/" element={<Suspense>{" "}<Home /></Suspense>}></Route>
         <Route path="/sign-in" element={<Suspense>{" "}<Signin /></Suspense>}></Route>
