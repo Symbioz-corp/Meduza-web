@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Suspense, lazy } from "react";
 import ScrollTop from "./utils/ScrollTop";
+import ErrorModal from "./components/modals/errorModal";
 
 const Home = lazy(() => import("./pages/general/Home"));
 const Signin = lazy(() => import("./pages/authentication/Signin"));
@@ -23,70 +24,16 @@ function AppContent() {
   return (
     <>
       <ScrollTop />
+      <ErrorModal />
       <Routes>
-        <Route
-          path="/"
-          element={
-            <Suspense>
-              {" "}
-              <Home />
-            </Suspense>
-          }
-        ></Route>
-        <Route
-          path="/sign-in"
-          element={
-            <Suspense>
-              {" "}
-              <Signin />
-            </Suspense>
-          }
-        ></Route>
-        <Route
-          path="/sign-up"
-          element={
-            <Suspense>
-              {" "}
-              <Signup />
-            </Suspense>
-          }
-        ></Route>
-        <Route
-          path="/about"
-          element={
-            <Suspense>
-              {" "}
-              <About />
-            </Suspense>
-          }
-        ></Route>
-        <Route
-          path="/blog"
-          element={
-            <Suspense>
-              {" "}
-              <Blog />
-            </Suspense>
-          }
-        ></Route>
-        <Route
-          path="/partenariat"
-          element={
-            <Suspense>
-              {" "}
-              <Partenariat />
-            </Suspense>
-          }
-        ></Route>
-        <Route
-          path="/clientSpace"
-          element={
-            <Suspense>
-              {" "}
-              <ClientSpace />
-            </Suspense>
-          }
-        ></Route>
+        <Route path="/" element={<Suspense>{" "}<Home /></Suspense>}></Route>
+        <Route path="/sign-in" element={<Suspense>{" "}<Signin /></Suspense>}></Route>
+        <Route path="/sign-up" element={<Suspense>{" "}<Signup /></Suspense>}></Route>
+        <Route path="/about" element={<Suspense>{" "}<About /></Suspense>}></Route>
+        <Route path="/blog" element={<Suspense>{" "}<Blog /></Suspense>}></Route>
+        <Route path="/partenariat" element={<Suspense>{" "}<Partenariat /></Suspense>}></Route>
+        <Route path="/clientSpace" element={<Suspense>{" "}<ClientSpace /></Suspense>}></Route>
+
       </Routes>
     </>
   );

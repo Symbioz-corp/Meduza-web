@@ -11,7 +11,6 @@ export default function Signin() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const [emailError, setEmailError] = useState('')
 
   const handleEmailChange = (newEmail: string) => {
     setEmail(newEmail)
@@ -29,7 +28,7 @@ export default function Signin() {
   return (
     <>
       <section className="w-full h-screen bg-slate-900 flex justify-center items-center">
-        <div className="w-full z-[60] overflow-x-hidden">
+        <div className="w-full z-[10] overflow-x-hidden">
           <div className="mt-0  ease-out transition-all sm:max-w-lg sm:w-full m-3 sm:mx-auto">
             <div className="bg-white border border-gray-200 rounded-xl shadow-sm  ">
               <div className="p-4 sm:p-7">
@@ -53,7 +52,7 @@ export default function Signin() {
 
                   <div>
                     <div className="grid gap-y-4">
-                      <InputText messageError={emailError} onDataChange={handleEmailChange} label='Adresse email' type='text' />
+                      <InputText onDataChange={handleEmailChange} label='Adresse email' type='text' />
                       <InputText onDataChange={handlePasswordChange} label='Mot de passe' type='password' />
                       <Button label='Connexion' onDataChange={handleSignin} />
                     </div>

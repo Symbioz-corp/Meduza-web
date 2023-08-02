@@ -82,6 +82,7 @@ class UserService extends FirebaseService {
             .catch((error) => {
                 if (error instanceof FirebaseError) {
                     switch (error.code) {
+                        case 'auth/email-already-in-use': throw new ValueError(`Adresse e-mail déjà utilisée`, `L'adresse e-mail que vous avez entrée est déjà associée à un compte existant. Veuillez vous connecter ou utiliser une autre adresse e-mail pour créer un nouveau compte.`)
                         case 'auth/credential-already-in-use': throw new ValueError(`Informations d'identification déjà utilisées`, `Les informations d'identification que vous avez fournies sont déjà associées à un compte existant.Veuillez vous connecter avec ces informations ou utiliser un autre ensemble d'informations pour créer un nouveau compte.`)
                         default: throw new ValueError(error.code, error.message)
                     }
