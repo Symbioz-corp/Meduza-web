@@ -16,6 +16,7 @@ export default function Signup() {
   const navigate = useNavigate()
   const [fullname, setFullname] = useState('')
   const [password, setPassword] = useState('')
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const [email, setEmail] = useState('')
 
   const handleFullnameChange = (newFullname: string) => { setFullname(newFullname) }
@@ -29,6 +30,7 @@ export default function Signup() {
     dispatch(show(payload))
   }
   const handleSignup = async () => {
+
     const name = fullname.trim()
     const nameWords = name.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1))
     setFullname(nameWords.join(' '))
@@ -38,14 +40,14 @@ export default function Signup() {
     console.log('email : ', email)
     console.log('password : ', password)
 
-    if (!fullname.length) alert('Veuillez remplir tout les champs')
-    else if (!email.length) alert('Veuillez remplir tout les champs')
-    else if (!password.length) alert('Veuillez remplir tout les champs')
-    else if (Validation.isEmail(email) == false) alert('Veuillez entrer une adresse email valide')
-    else if (Validation.isName(fullname) == false || fullname.length < 5) alert('Veuillez renseigner votre vrai nom')
-    else if (password.length < 7) alert('Le mot de passe doit contenir au moin 8 caractères')
+    if (!fullname.length) showModal({ code: 'Comment vous appelez vous?', message: 'Veuillez fournir tout les informations demandées notament votre nom complet' })
+    else if (!email.length) showModal({ code: 'Vous avez oublié de fournir votre adresse email', message: 'Veuillez fournir tout les informations demandées notament votre adresse email' })
+    else if (!password.length) showModal({ code: 'Penser à remplir le mot de passe', message: 'Pour votre securité vous devez fournir un mot de passe de 8 caractère minimum.' })
+    else if (Validation.isEmail(email) == false) showModal({ code: 'Adresse email invalide', message: 'Afin de poursuivre, veuillez saisir une adresse e-mail valide conformément à nos exigences.' })
+    else if (Validation.isName(fullname) == false || fullname.length < 5) showModal({ code: 'Donnez votre vrai nom complet', message: 'Medusa est une plateforme professionnelle qui sera lié à votre entreprise. Il est donc plus approprié de fournir son vrai nom.' })
+    else if (password.length < 7) showModal({ code: 'Votre mot de passe est trop court', message: 'Pour votre securité vous devez fournir un mot de passe de 8 caractère minimum.' })
     else {
-
+      setIsLoading(true)
       await UserService.signUp(email, fullname, password)
         .then((credential) => {
           console.log(credential);
@@ -55,10 +57,9 @@ export default function Signup() {
             code: error.code,
             message: error.message
           }
-          if (error instanceof ValueError) {
-            showModal(payload)
-          }
+          if (error instanceof ValueError) showModal(payload)
         })
+        .finally(() => setIsLoading(false))
 
     }
   }
@@ -84,7 +85,7 @@ export default function Signup() {
                     <InputText onDataChange={handleFullnameChange} label='Nom complet' type='text' />
                     <InputText onDataChange={handleEmailChange} label='Adresse email' type='text' />
                     <InputText onDataChange={handlePasswordChange} label='Mot de passe' type='password' />
-                    <Button label='Inscription' onDataChange={handleSignup} />
+                    <Button label='Inscription' isLoading={isLoading} onDataChange={handleSignup} />
                   </div>
                 </div>
               </div>
