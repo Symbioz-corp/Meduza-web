@@ -1,14 +1,9 @@
 export class ValueError extends Error {
-    constructor(message: string) {
+    code: string | undefined
+    constructor(message: string, code: string | undefined) {
         super(message);
-        this.name = 'ValueError';
+        if (code) this.code = code
     }
 }
 
-export class DatabaseError extends Error {
-    constructor(message: string) {
-        super(message);
-        this.name = 'DatabaseError';
-    }
-}
 

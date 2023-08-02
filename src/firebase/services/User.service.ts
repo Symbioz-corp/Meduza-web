@@ -19,7 +19,7 @@ class UserService extends FirebaseService {
     }
 
     async signinWithGoogle(): Promise<UserCredential | void> {
-        await signInWithPopup(this.auth, this.googleAuthProvider)
+        return await signInWithPopup(this.auth, this.googleAuthProvider)
             .then(async (userCredential) => {
                 if (userCredential.user.email && userCredential.user.displayName) {
                     await setDoc(doc(this.userCollection, userCredential.user.uid), {
@@ -29,47 +29,38 @@ class UserService extends FirebaseService {
                         pictureUrl: userCredential.user.photoURL,
                         pictureList: []
                     })
-                } else throw new ValueError("Ce compte google ne peut pas créer de compte sur Medusa")
+                } else throw new ValueError("Votre compte n'est pas correctement inscrit à google", "Vous ne pouvez pas créer un compte Medusa avec ce compte google car il b'est inscrit sur aucun nom.")
                 return userCredential
             })
             .catch((error) => {
                 if (error instanceof FirebaseError) {
                     switch (error.code) {
-                        default:
-                            throw new ValueError(error.code)
+                        default: throw new ValueError(error.code, error.message)
                     }
                 }
             })
-
-
     }
 
     async signin(email: string, password: string): Promise<UserCredential | void> {
-        let userCredential: UserCredential
-        try {
-            userCredential = await signInWithEmailAndPassword(this.auth, email, password)
-            return userCredential
-
-        } catch (error) {
-            if (error instanceof FirebaseError) {
-                switch (error.code) {
-                    case 'auth/invalid-email':
-                        throw new ValueError("Adresse e-mail invalide")
-                    case 'auth/wrong-password':
-                        throw new ValueError('Mot de passe incorrect')
-                    default:
-                        throw new ValueError(error.code)
+        return await signInWithEmailAndPassword(this.auth, email, password)
+            .then((userCredential) => { return userCredential })
+            .catch((error) => {
+                if (error instanceof FirebaseError) {
+                    switch (error.code) {
+                        case 'auth/invalid-email': throw new ValueError("Adresse e-mail invalide", "Veuillez entrer une adresse e-mail valide pour continuer.")
+                        case 'auth/wrong-password': throw new ValueError('Mot de passe incorrect', 'Le mot de passe que vous avez saisi est incorrect. Veuillez réessayer.')
+                        default: throw new ValueError(error.message, error.code)
+                    }
                 }
-            }
-        }
-
+            })
     }
-    async signUp(email: string, fullname: string, password: string): Promise<UserCredential | void> {
-        if (password.length < 8) throw new ValueError("Le mot de passe doit contenir au moin 8 caractères.")
-        else if (!Validation.isName(fullname)) throw new ValueError("Veuillez renseigner un nom valide.")
-        else if (!Validation.isEmail(email)) throw new ValueError("Veuillez renseigner un email valide.")
 
-        await createUserWithEmailAndPassword(this.auth, email, password)
+    async signUp(email: string, fullname: string, password: string): Promise<UserCredential | void> {
+        if (password.length < 8) throw new ValueError("Mot de passe trop court", "Le mot de passe doit comporter au moins 8 caractères. Veuillez choisir un mot de passe plus long.")
+        else if (!Validation.isName(fullname)) throw new ValueError("Nom et prénom invalide", "Votre participation est importante. Assurez-vous d'entrer un nom valide pour que nous puissions vous offrir une expérience optimale")
+        else if (!Validation.isEmail(email)) throw new ValueError("Adresse email invalide", "Afin de poursuivre, veuillez saisir une adresse e-mail valide conformément à nos exigences.")
+
+        return await createUserWithEmailAndPassword(this.auth, email, password)
             .then(async (userCredential) => {
                 await setDoc(doc(this.userCollection, userCredential.user.uid), {
                     uid: userCredential.user.uid,
@@ -79,33 +70,23 @@ class UserService extends FirebaseService {
                     pictureUrl: '',
                     pictureList: []
                 })
-                this.sendVerificationEmail()
-                console.log('userCredential : ', userCredential);
-
+                if (this.auth.currentUser?.emailVerified == false) {
+                    sendEmailVerification(this.auth.currentUser)
+                        .then(() => alert('Un email de verification vous a été envoyé'))
+                        .catch((error) => {
+                            console.log(error)
+                        })
+                } else throw new ValueError(`L'adresse a déjà été vérifiée`, 'Cette adresse e-mail a déjà été confirmée.')
                 return userCredential
             })
             .catch((error) => {
-                console.log('error : ', error);
-
                 if (error instanceof FirebaseError) {
                     switch (error.code) {
-                        case 'auth/credential-already-in-use':
-                            throw new ValueError(`Vous avez déjà un compte lié à l'adresse email: ${email}.`)
-                        default:
-                            throw new ValueError(error.code)
+                        case 'auth/credential-already-in-use': throw new ValueError(`Informations d'identification déjà utilisées`, `Les informations d'identification que vous avez fournies sont déjà associées à un compte existant.Veuillez vous connecter avec ces informations ou utiliser un autre ensemble d'informations pour créer un nouveau compte.`)
+                        default: throw new ValueError(error.code, error.message)
                     }
                 }
             })
-    }
-
-    sendVerificationEmail(): void {
-        if (this.auth.currentUser?.emailVerified == false) {
-            sendEmailVerification(this.auth.currentUser)
-                .then(() => alert('Un email de verification vous a été envoyé'))
-                .catch((error) => {
-                    console.log(error);
-                })
-        } else throw new ValueError('Cet adresse email est déjà vérifié')
     }
 }
 
