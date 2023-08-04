@@ -29,7 +29,7 @@ class UserService extends FirebaseService {
                         pictureUrl: userCredential.user.photoURL,
                         pictureList: []
                     })
-                } else throw new ValueError("Votre compte n'est pas correctement inscrit à google", "Vous ne pouvez pas créer un compte Medusa avec ce compte google car il b'est inscrit sur aucun nom.")
+                } else throw new ValueError("Votre compte n'est pas correctement inscrit à google", "Vous ne pouvez pas créer un compte Medusa avec ce compte google car il n'est inscrit sur aucun nom.")
                 return userCredential
             })
             .catch((error) => {
