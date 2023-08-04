@@ -6,7 +6,7 @@ export default function Hero() {
   return (
     <div className="bg-slate-900">
       <div className="bg-gradient-to-b from-violet-600/[.15] via-transparent">
-        <div className="max-w-[85rem] h-[100vh] mx-auto px-4 sm:px-6 lg:px-8 py-24 space-y-8">
+        <div className="flex flex-col justify-center max-w-[85rem] h-screen mx-auto px-4 sm:px-6 lg:px-8 py-24 space-y-14">
           <div className="flex justify-center">
             <a
               onClick={() => navigate("/sign-in")}
