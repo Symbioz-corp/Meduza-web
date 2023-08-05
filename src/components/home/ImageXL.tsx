@@ -1,9 +1,9 @@
 import React from "react";
 export default function ImageXL() {
     return (
-        <div className="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto bg-slate-900">
+        <div className="px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto bg-slate-900 flex justify-center">
 
-            <div className="grid lg:grid-cols-3 gap-8 lg:gap-12">
+            <div className="grid lg:grid-cols-3 gap-8 lg:gap-12 max-w-[85rem]">
                 <div className="lg:col-span-1">
                     <h2 className="font-bold text-2xl md:text-3xl text-white">
                         Nous relevons les défis auxquels sont confrontées les start-ups
