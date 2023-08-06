@@ -1,5 +1,5 @@
 import { collection, CollectionReference } from "firebase/firestore"
-import { firebaseApp } from "../firebase"
+import { FirebaseService } from "../firebase"
 
 export type Item = {
     name: string;
@@ -9,4 +9,4 @@ export type Item = {
     groupUserLink: string; // reference to GroupUserLink document
 }
 
-export const ItemCollection = collection(firebaseApp.firestore, 'Items') as CollectionReference<Item>
+export const ItemCollection = collection(FirebaseService.firestore, 'Items') as CollectionReference<Item>

@@ -1,12 +1,15 @@
 import React from "react";
 import UserService from "../../firebase/services/User.service";
 import { connect } from "../../store/features/authenticationSlice";
+import { show, TErrorModal } from "../../store/features/errorModalSlice";
 import { showSuccess, TSuccessModal } from "../../store/features/successModalSlice";
 import { Dispatch } from "../../store/hooks";
+import { ValueError } from "../../utils/error";
 
 export default function GoogleAuthentication() {
     const dispatch = Dispatch()
     const showSuccessModal = (payload: TSuccessModal) => { dispatch(showSuccess(payload)) }
+    const showModal = (payload: TErrorModal) => { dispatch(show(payload)) }
     const handleAuth = async () => {
         await UserService.signinWithGoogle()
             .then((userCredential) => {
@@ -14,13 +17,13 @@ export default function GoogleAuthentication() {
                     const user = userCredential.user
                     dispatch(connect({
                         displayName: user.displayName,
-                        email: user.email,
-                        emailVerified: user.emailVerified,
                         photoURL: user.photoURL,
                         uid: user.uid,
                     }))
                     showSuccessModal({ code: 'Connexion réussie', message: 'Vous pouvez commencer à profiter des services fourni par Medusa' })
                 }
+            }).catch((error) => {
+                if (error instanceof ValueError) showModal({ code: error.code, message: error.message })
             })
     }
     return (

@@ -1,5 +1,5 @@
 import { collection, CollectionReference } from "firebase/firestore"
-import { firebaseApp } from "../firebase"
+import { FirebaseService } from "../firebase"
 
 export type React = {
     reactType: string;
@@ -9,4 +9,4 @@ export type React = {
 
 }
 
-export const ReactCollection = collection(firebaseApp.firestore, 'Reacts') as CollectionReference<React>
+export const ReactCollection = collection(FirebaseService.firestore, 'Reacts') as CollectionReference<React>

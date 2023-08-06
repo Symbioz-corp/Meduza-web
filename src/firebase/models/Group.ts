@@ -1,5 +1,5 @@
 import { collection, CollectionReference } from "firebase/firestore"
-import { firebaseApp } from "../firebase"
+import { FirebaseService } from "../firebase"
 
 
 export type Group = {
@@ -9,4 +9,4 @@ export type Group = {
     category: string; // reference to Category document
 }
 
-export const GroupCollection = collection(firebaseApp.firestore, 'Groups') as CollectionReference<Group>
+export const GroupCollection = collection(FirebaseService.firestore, 'Groups') as CollectionReference<Group>

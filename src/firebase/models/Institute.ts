@@ -1,11 +1,11 @@
 import { collection, CollectionReference } from "firebase/firestore"
-import { firebaseApp } from "../firebase"
+import { FirebaseService } from "../firebase"
 
-export type Institute = {
+export type TInstitute = {
     name: string;
     address: string;
-    pictureUrl: string;
-    contact: string[];
+    pictureUrl?: string;
+    contact?: string[];
 }
 
-export const InstituteCollection = collection(firebaseApp.firestore, 'Institutes') as CollectionReference<Institute>
+export const InstituteCollection = collection(FirebaseService.firestore, 'Institutes') as CollectionReference<TInstitute>

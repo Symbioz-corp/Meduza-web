@@ -1,5 +1,5 @@
 import { collection, CollectionReference } from "firebase/firestore"
-import { firebaseApp } from "../firebase"
+import { FirebaseService } from "../firebase"
 
 export type Annonce = {
     title: string;
@@ -11,4 +11,4 @@ export type Annonce = {
     scopeId: string; // reference to User/Group/Category document
 }
 
-export const AnnonceCollection = collection(firebaseApp.firestore, 'Annonces') as CollectionReference<Annonce>
+export const AnnonceCollection = collection(FirebaseService.firestore, 'Annonces') as CollectionReference<Annonce>

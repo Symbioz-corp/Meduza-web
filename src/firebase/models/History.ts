@@ -1,5 +1,5 @@
 import { collection, CollectionReference } from "firebase/firestore"
-import { firebaseApp } from "../firebase"
+import { FirebaseService } from "../firebase"
 
 export type History = {
     action: string;
@@ -9,4 +9,4 @@ export type History = {
     institute: string;
 }
 
-export const HistoryCollection = collection(firebaseApp.firestore, 'Histories') as CollectionReference<History>
+export const HistoryCollection = collection(FirebaseService.firestore, 'Histories') as CollectionReference<History>

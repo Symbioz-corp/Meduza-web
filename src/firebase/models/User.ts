@@ -1,5 +1,5 @@
 import { collection, CollectionReference } from "firebase/firestore"
-import { firebaseApp } from "./../firebase"
+import { FirebaseService } from "./../firebase"
 
 export type User = {
     pictureUrl?: string | null,
@@ -10,4 +10,4 @@ export type User = {
     uid: string
 }
 
-export const UserCollection = collection(firebaseApp.firestore, 'users') as CollectionReference<User>
+export const UserCollection = collection(FirebaseService.firestore, 'users') as CollectionReference<User>

@@ -1,5 +1,5 @@
 import { collection, CollectionReference } from "firebase/firestore"
-import { firebaseApp } from "../firebase"
+import { FirebaseService } from "../firebase"
 
 export type GroupUserLink = {
     roles: string[];
@@ -7,4 +7,4 @@ export type GroupUserLink = {
     group: string; // reference to Group document
 }
 
-export const GroupUserLinkCollection = collection(firebaseApp.firestore, 'GroupUserLinks') as CollectionReference<GroupUserLink>
+export const GroupUserLinkCollection = collection(FirebaseService.firestore, 'GroupUserLinks') as CollectionReference<GroupUserLink>

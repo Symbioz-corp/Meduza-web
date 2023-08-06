@@ -1,25 +1,28 @@
 import { FirebaseError } from "@firebase/util"
 import { createUserWithEmailAndPassword, GoogleAuthProvider, sendEmailVerification, signInWithEmailAndPassword, signInWithPopup, UserCredential } from "firebase/auth"
-import { setDoc, doc, collection, CollectionReference } from "firebase/firestore"
+import { setDoc, doc, CollectionReference } from "firebase/firestore"
 import { ValueError } from "../../utils/error"
 import { Validation } from "../../utils/validation"
 import { FirebaseService } from "../firebase"
-import { UserModel } from "../models/User"
+import { User, UserCollection } from "../models/User"
 
 
-class UserService extends FirebaseService {
+class UserService {
 
-    userCollection: CollectionReference<UserModel>
+    userCollection: CollectionReference<User>
     googleAuthProvider: GoogleAuthProvider
 
     constructor() {
-        super()
         this.googleAuthProvider = new GoogleAuthProvider()
-        this.userCollection = collection(this.firestore, 'users') as CollectionReference<UserModel>
+        this.userCollection = UserCollection
+    }
+
+    async getAuthentifiedUser() {
+        return FirebaseService.auth.currentUser
     }
 
     async signinWithGoogle(): Promise<UserCredential | void> {
-        return await signInWithPopup(this.auth, this.googleAuthProvider)
+        return await signInWithPopup(FirebaseService.auth, this.googleAuthProvider)
             .then(async (userCredential) => {
                 if (userCredential.user.email && userCredential.user.displayName) {
                     await setDoc(doc(this.userCollection, userCredential.user.uid), {
@@ -33,8 +36,11 @@ class UserService extends FirebaseService {
                 return userCredential
             })
             .catch((error) => {
-                if (error instanceof FirebaseError) {
+                if (error.code) {
                     switch (error.code) {
+                        case 'auth/popup-closed-by-user': break
+                        case 'auth/cancelled-popup-request': break
+                        case 'auth/network-request-failed': throw new ValueError(`Problème de connexion internet`, `Il est impossible de vous connecter car votre connexion internet est de mauvaise qualité`)
                         default: throw new ValueError(error.code, error.message)
                     }
                 }
@@ -42,7 +48,7 @@ class UserService extends FirebaseService {
     }
 
     async signin(email: string, password: string): Promise<UserCredential | void> {
-        return await signInWithEmailAndPassword(this.auth, email, password)
+        return await signInWithEmailAndPassword(FirebaseService.auth, email, password)
             .then((userCredential) => { return userCredential })
             .catch((error) => {
                 if (error instanceof FirebaseError) {
@@ -62,7 +68,7 @@ class UserService extends FirebaseService {
         else if (!Validation.isName(fullname)) throw new ValueError("Nom et prénom invalide", "Votre participation est importante. Assurez-vous d'entrer un nom valide pour que nous puissions vous offrir une expérience optimale")
         else if (!Validation.isEmail(email)) throw new ValueError("Adresse email invalide", "Afin de poursuivre, veuillez saisir une adresse e-mail valide conformément à nos exigences.")
 
-        return await createUserWithEmailAndPassword(this.auth, email, password)
+        return await createUserWithEmailAndPassword(FirebaseService.auth, email, password)
             .then(async (userCredential) => {
                 await setDoc(doc(this.userCollection, userCredential.user.uid), {
                     uid: userCredential.user.uid,
@@ -72,8 +78,8 @@ class UserService extends FirebaseService {
                     pictureUrl: '',
                     pictureList: []
                 })
-                if (this.auth.currentUser?.emailVerified == false) {
-                    sendEmailVerification(this.auth.currentUser)
+                if (FirebaseService.auth.currentUser?.emailVerified == false) {
+                    sendEmailVerification(FirebaseService.auth.currentUser)
                         .catch((error) => {
                             console.error(error)
                         })
