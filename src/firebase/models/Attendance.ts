@@ -6,7 +6,7 @@ export type Attendance = {
     inTime: Date;
     outTime: Date;
     institute: string; // reference to Institute document
-    profile: string; // reference to Profile document
+    user: string; // reference to User document
 }
 
 export const AttendanceCollection = collection(firebaseApp.firestore, 'Attendances') as CollectionReference<Attendance>

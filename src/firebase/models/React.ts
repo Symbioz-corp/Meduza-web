@@ -3,7 +3,7 @@ import { firebaseApp } from "../firebase"
 
 export type React = {
     reactType: string;
-    profile: string; // reference to Profile document
+    user: string; // reference to User document
     post: string; // reference to Post document (if reaction on post)
     react: string; // reference to React document (if reaction on react)
 

@@ -7,7 +7,7 @@ export type Notification = {
     type: string;
     instituteName: string;
     date: Date;
-    profile: string; // reference to Profile document
+    user: string; // reference to user document
 }
 
 export const NotificationCollection = collection(firebaseApp.firestore, 'Notifications') as CollectionReference<Notification>

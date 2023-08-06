@@ -5,7 +5,7 @@ export type History = {
     action: string;
     editType: string;
     editedId: string; // reference to edited document
-    author: string; // reference to Profile document
+    author: string; // reference to User document
     institute: string;
 }
 

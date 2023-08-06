@@ -5,7 +5,7 @@ export type Post = {
     date: Date;
     text: string;
     filesUrl: string[];
-    profile: string; // reference to Profile document
+    user: string; // reference to User document
     institute: string; // reference to Institute document
 }
 

@@ -6,7 +6,7 @@ export type Item = {
     value: string;
     isPublic: boolean;
     type: string;
-    groupProfileLink: string; // reference to GroupProfileLink document
+    groupUserLink: string; // reference to GroupUserLink document
 }
 
 export const ItemCollection = collection(firebaseApp.firestore, 'Items') as CollectionReference<Item>

@@ -8,7 +8,7 @@ export type Annonce = {
     filePaths: string[];
     date: Date;
     scope: string;
-    scopeId: string; // reference to Profile/Group/Category document
+    scopeId: string; // reference to User/Group/Category document
 }
 
 export const AnnonceCollection = collection(firebaseApp.firestore, 'Annonces') as CollectionReference<Annonce>

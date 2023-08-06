@@ -5,7 +5,7 @@ export type Comment = {
     date: Date;
     text: string;
     imageUrl: string;
-    profile: string; // reference to Profile document
+    user: string; // reference to User document
     post: string; // reference to Post document
 }
 
