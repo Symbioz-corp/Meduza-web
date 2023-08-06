@@ -11,13 +11,13 @@ avoir (rechercher dans) la liste des profils d'une catégorie
 avoir (rechercher dans) la liste des profils d'un institut
 avoir (rechercher dans) la liste des profils d'un groupe
 
-avoir les détails d'un profile par rapport à l'institut (items, groupe, categorie, role) en utilisant son identifiant
+avoir les détails d'un utilisateur par rapport à l'institut (items, groupe, categorie, role) en utilisant son identifiant
 avoir l'emploi du temps d'un utilisateur par rapport a l'institut
 
 quand un administrateur d'une institut fait une modification, alors cette modification est enregistré
 avoir la liste des modifications des administrateurs d'un institut
 avoir la liste des modifications effecté par un utilisateur
-avoir la liste des modifications apporté à un profile, un groupe, une catégorie, annonces, publication
+avoir la liste des modifications apporté à un utilisateur, un groupe, une catégorie, annonces, publication
 
 possibilité de modifier ou supprimer une catégorie, un groupe, une annonce, une publication, un utilisateur
 
